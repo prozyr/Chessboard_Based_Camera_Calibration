@@ -1,8 +1,7 @@
 import cv2
 import numpy as np
 
-
-# Wyświetlenie każdego obrazu na osobnym podwykresie
+# Za pomocą telefonu wyświetl szachownicę
 
 cap = cv2.VideoCapture(0)
 
@@ -11,18 +10,12 @@ kernel = np.array([[-1,-1,-1],
                    [-1, 9,-1],
                    [-1,-1,-1]])
 
-# Tworzenie kernela
+# Tworzenie macierzy dla operacji morfologicznej
 kernel_morph = np.ones((3,3), np.uint8)
 
 def bin_img(frame):
-    # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-    edges = cv2.Canny(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY),100,200) # wykrywanie krawędzi z użyciem funkcji Canny
+    edges = cv2.Canny(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY),100,200)
     edges = cv2.morphologyEx(edges, cv2.MORPH_DILATE, kernel_morph)
-    # ret,Vframe = cv2.threshold(edges,180,255,cv2.THRESH_BINARY) # binaryzacja krawędzi
-
-
-    # Znalezienie konturów obrazu
     contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # Wybór czworokątów, które reprezentują interesujący nas kształt
@@ -50,13 +43,11 @@ def bin_img(frame):
 while True:
 
     ret, frame  = cap.read()
-    # frame_fHigh = cv2.filter2D(frame, -1, kernel)
-    #frame_morph = cv2.morphologyEx(frame, cv2.MORPH_ERODE, kernel_morph)
 
     frame_bin, edges = bin_img(frame)
 
-    frame_bin2rgb = frame_bin# cv2.merge((frame_bin, frame_bin, frame_bin))
-    edges = cv2.merge((edges, edges, edges))
+    frame_bin2rgb = frame_bin
+    edges = cv2.merge((edges, edges, edges)) # dummy RGB
 
     cv2.imshow("obraz z kamery",np.concatenate((frame_bin2rgb, frame, edges), axis=1))
 
