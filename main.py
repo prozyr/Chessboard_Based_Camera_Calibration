@@ -26,21 +26,35 @@ def bin_img(frame):
     Vframe = frame
     # Wybór czworokątów, które reprezentują interesujący nas kształt
     quads = []
-    vector_area = []        # TODO: próba odległości kamery od szachownicy
     for contour in contours:
         area = cv2.contourArea(contour)
         if area > 1000:
-            vector_area = vector_area +  [area]
             perimeter = cv2.arcLength(contour, True)
             approx = cv2.approxPolyDP(contour, 0.1 * perimeter, True)
             if len(approx) == 4:
                 x, y, w, h = cv2.boundingRect(approx)
                 if abs(w - h) < 50:
                     quads.append(approx)
-    print(10000*8/(np.mean(vector_area))," mm") # TODO: próba odległości kamery od szachownicy
+
     # Narysowanie konturu czworokąta na oryginalnym obrazie
     for quad in quads:
         cv2.drawContours(Vframe, [quad], 0, (0, 255, 0), 2)
+    ################### OLD ONE #################### TODO: ChessBoard calibration
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    # Określ liczbę wierszy i kolumn szachownicy
+    rows = 6
+    cols = 6
+
+    # Znajdź narożniki szachownicy na klatce
+    ret, corners = cv2.findChessboardCorners(gray, (rows, cols), None)
+
+    # Jeśli narożniki zostały znalezione, naniesiemy na klatkę punkty łączące kwadraty
+    if ret == True:
+        print("szach")
+        # Użyj funkcji cv2.drawChessboardCorners do naniesienia punktów na klatkę
+        cv2.drawChessboardCorners(Vframe, (rows, cols), corners, ret)
+    ################################################
 
     return Vframe, edges
 
