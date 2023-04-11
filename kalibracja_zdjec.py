@@ -12,7 +12,7 @@ obj_points = []  # lista odpowiadających im punktów na planszy szachowej
 # Przetwarzanie obrazów
 for i in range(1, 23):
     # Wczytanie obrazu
-    img_path = f"zdjecie ({i}).jpg"
+    img_path = f"images/zdjecie ({i}).jpg"
     img = cv2.imread(img_path)
     height, width = img.shape[:2]
     new_height = int(height/6)
