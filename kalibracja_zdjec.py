@@ -28,10 +28,11 @@ for i in range(1, 23):
 
     # Jeśli znaleziono punkty planszy szachowej
     if ret:
-     obj_points.append(np.zeros((COLS * ROWS, 3), np.float32))
-     obj_points[-1][:, :2] = np.mgrid[0:COLS, 0:ROWS].T.reshape(-1, 2)
-     img_points.append(corners)
-
+        obj_points.append(np.zeros((COLS * ROWS, 3), np.float32))
+        obj_points[-1][:, :2] = np.mgrid[0:COLS, 0:ROWS].T.reshape(-1, 2)
+        img_points.append(corners)
+        print(corners)
+    input()
     # Wizualizacja punktów planszy szachowej na obrazie
     img = cv2.drawChessboardCorners(img, (COLS, ROWS), corners, ret)
 
