@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-
+import pandas as pd
 # Wymiary planszy szachowej
 ROWS = 7
 COLS = 7
@@ -42,9 +42,40 @@ for i in range(1, 23):
 cv2.destroyAllWindows()
 
 # Kalibracja kamery
-# if len(obj_points) > 0:
-#     ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(obj_points, img_points, gray.shape[::-1], None, None)
-#     np.savetxt('plik.txt', (ret, mtx, dist, rvecs, tvecs))
-#     print("Kalibracja zakończona pomyślnie.")
-# else:
-#     print("Nie znaleziono punktów planszy szachowej na żadnym z obrazów.")
+if len(obj_points) > 0:
+    ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(obj_points, img_points, gray.shape[::-1], None, None)
+    with open('C:/Users/Maciej Wecki/Desktop/Studia Magisterskie/CVAPR/Projekt/parametry.txt','w') as file:
+        file.write("RET"+ '\n' +str(ret) + '\n' + "MTX" + '\n' +str(mtx) + '\n' + "DIST" + '\n' + str(dist) + '\n' + 'RVECS' + '\n' + str(rvecs) + '\n' + "TVECS" + '\n' + str(tvecs))
+        file.close()
+    print("Kalibracja zakończona pomyślnie.")
+else:
+    print("Nie znaleziono punktów planszy szachowej na żadnym z obrazów.")
+
+
+
+cv2.imshow('img',img)
+cv2.waitKey(0)
+h,  w = img.shape[:2]
+newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
+
+# undistort
+mapx, mapy = cv2.initUndistortRectifyMap(mtx, dist, None, newcameramtx, (w,h), 5)
+dst = cv2.remap(img, mapx, mapy, cv2.INTER_LINEAR)
+# crop the image
+x, y, w, h = roi
+dst = dst[y:y+h, x:x+w]
+cv2.imshow('wynik', dst)
+cv2.imwrite('C:/Users/Maciej Wecki/Desktop/Studia Magisterskie/CVAPR/Result.jpg', dst)  # Modify the file path here
+cv2.waitKey(0)
+
+
+mean_error = 0
+for i in range(len(obj_points)):
+    imgpoints2, _ = cv2.projectPoints(obj_points[i], rvecs[i], tvecs[i], mtx, dist)
+    error = cv2.norm(img_points[i], imgpoints2, cv2.NORM_L2)/len(imgpoints2)
+    mean_error += error
+print( "total error: {}".format(mean_error/len(obj_points)) )
+
+with open('C:/Users/Maciej Wecki/Desktop/Studia Magisterskie/CVAPR/Projekt/parametry.txt','a') as file:
+        file.write('\n' + "ERROR" + '\n' + str(mean_error/len(obj_points)))
+        file.close()
