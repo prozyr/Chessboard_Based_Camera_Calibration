@@ -1,0 +1,5 @@
+1. Obliczanie nowych parametrów kamery w drugim wątku
+2. Z kilku sekund pobrać X losowych obrazów OR Zostawić
+3. Wyświetlanie ERROR
+4. Refaktoryzacja, podział na klasy i funkcje
+5. Ewentualne UI, gdzie będzie można załączać kamerę, wyświtalć błąd

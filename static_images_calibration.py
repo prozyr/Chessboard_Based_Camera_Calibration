@@ -72,7 +72,7 @@ for i in range(len(objpoints)):
     imgpoints2, _ = cv2.projectPoints(objpoints[i], rvecs[i], tvecs[i], mtx, dist)
     error = cv2.norm(points_array[i], imgpoints2, cv2.NORM_L2)/len(imgpoints2)
     mean_error += error
-print( "total error: {}".format(mean_error/len(objpoints)) )
+print( "total error: {}".format(mean_error/len(objpoints)))
 
 with open('parameters.txt','a') as file:
         file.write('\n' + "ERROR" + '\n' + str(mean_error/len(objpoints)))

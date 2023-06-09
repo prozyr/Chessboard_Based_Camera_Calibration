@@ -10,16 +10,16 @@ from static_camera_calibration_function import static_camera_calibration_functio
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 last_time = 0
 
-
 ########## START ##########
-video = cv2.VideoCapture(0)
+video = cv2.VideoCapture(1)
 success, img = video.read()
 cv2.imshow('img', img)
-cv2.moveWindow('img', 40,30)
+cv2.moveWindow('img', 40, 30)
 cv2.waitKey(0)
 
 images_for_calibration = []
 cameraModel = None
+
 while True:
     counter = 0
     while time.time() - last_time < 0.1:
@@ -36,8 +36,11 @@ while True:
         images_for_calibration = []
 
     if cameraModel is not None:
-        img = cameraModel.undistort_img(img)
+        undistorted_img = cameraModel.undistort_img(img)
+        cv2.imshow('img', undistorted_img)
+    else:
+        cv2.imshow('img', img)
 
     cv2.imshow('img', img)
-    cv2.waitKey(0)
+    cv2.waitKey(1)
 
