@@ -13,10 +13,8 @@ logging.info("Number of found paths: " + str(len(images_paths)))
 CHESS_BOARD_SIZES = (9, 6)
 objpoints = []
 points_array = []
-objp = np.zeros((6*7,3), np.float32)
-objp[:,:2] = np.mgrid[0:7,0:6].T.reshape(-1,2)
-
-
+objp = np.zeros((6*9,3), np.float32)
+objp[:,:2] = np.mgrid[0:9,0:6].T.reshape(-1,2)
 
 
 for img_path in images_paths:
@@ -64,17 +62,17 @@ dst = cv2.remap(img, mapx, mapy, cv2.INTER_LINEAR)
 x, y, w, h = roi
 dst = dst[y:y+h, x:x+w]
 cv2.imshow('wynik', dst)
-cv2.imwrite('C:/Users/Maciej Wecki/Desktop/Studia Magisterskie/CVAPR/Result.jpg', dst)  # Modify the file path here
+cv2.imwrite('UndistortedResult.jpg', dst)  # Modify the file path here
 cv2.waitKey(0)
 
 
 mean_error = 0
-for i in range(len(obj_points)):
-    imgpoints2, _ = cv2.projectPoints(obj_points[i], rvecs[i], tvecs[i], mtx, dist)
-    error = cv2.norm(img_points[i], imgpoints2, cv2.NORM_L2)/len(imgpoints2)
+for i in range(len(objpoints)):
+    imgpoints2, _ = cv2.projectPoints(objpoints[i], rvecs[i], tvecs[i], mtx, dist)
+    error = cv2.norm(points_array[i], imgpoints2, cv2.NORM_L2)/len(imgpoints2)
     mean_error += error
-print( "total error: {}".format(mean_error/len(obj_points)) )
+print( "total error: {}".format(mean_error/len(objpoints)) )
 
-with open('C:/Users/Maciej Wecki/Desktop/Studia Magisterskie/CVAPR/Projekt/parametry.txt','a') as file:
-        file.write('\n' + "ERROR" + '\n' + str(mean_error/len(obj_points)))
+with open('parameters.txt','a') as file:
+        file.write('\n' + "ERROR" + '\n' + str(mean_error/len(objpoints)))
         file.close()
