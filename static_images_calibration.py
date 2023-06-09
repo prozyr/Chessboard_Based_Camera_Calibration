@@ -9,7 +9,6 @@ logging.info('Loading list of image files...')
 images_paths = glob.glob('photos/Series1_*.jpg')
 logging.info("Number of found paths: " + str(len(images_paths)))
 
-
 # Statistic arrays and constants
 logging.info("Create statistic arrays and constants")
 CHESS_BOARD_SIZES = (9, 6)
