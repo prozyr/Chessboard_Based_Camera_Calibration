@@ -5,9 +5,19 @@ import logging
 
 
 class CameraModel:
-    def __init__(self, cameramtx, roi):
-        self.cameramtx = cameramtx
+    def __init__(self, newcameramtx, roi, mtx, dist):
+        self.newcameramtx = newcameramtx
         self.roi = roi
+        self.mtx = mtx
+        self.dist = dist
+
+    def undistort_img(self, img):
+        h, w = img.shape[:2]
+        mapx, mapy = cv2.initUndistortRectifyMap(self.mtx, self.dist, None, self.newcameramtx, (w, h), 5)
+        dst = cv2.remap(img, mapx, mapy, cv2.INTER_LINEAR)
+        x, y, w, h = self.roi
+        dst = dst[y:y + h, x:x + w]
+        return dst
 
 def static_camera_calibration_function(photos):
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -37,20 +47,17 @@ def static_camera_calibration_function(photos):
             points_array.append(cornersSubPix)
             cv2.drawChessboardCorners(img, CHESS_BOARD_SIZES, cornersSubPix, ret)
 
-
     if len(points_array) > 0:
         logging.info("Start camera calibration")
         ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, points_array, img_gray.shape[::-1], None, None)
         with open('parameters.txt','w') as file:
-            file.write("RET"+ '\n' +str(ret) + '\n' + "MTX" + '\n' +str(mtx) + '\n' + "DIST" + '\n' + str(dist) + '\n' + 'RVECS' + '\n' + str(rvecs) + '\n' + "TVECS" + '\n' + str(tvecs))
+            file.write("RET" + '\n' +str(ret) + '\n' + "MTX" + '\n' +str(mtx) + '\n' + "DIST" + '\n' + str(dist) + '\n' + 'RVECS' + '\n' + str(rvecs) + '\n' + "TVECS" + '\n' + str(tvecs))
             file.close()
         print("Successful calibration")
     else:
         print("There is no points. ERROR.")
 
-
     h,  w = img.shape[:2]
     newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
 
-    return CameraModel(newcameramtx, roi)
-
+    return CameraModel(newcameramtx, roi, mtx, dist)

@@ -19,6 +19,7 @@ cv2.moveWindow('img', 40,30)
 cv2.waitKey(0)
 
 images_for_calibration = [];
+cameraModel = None;
 while True:
     success, img = video.read()
     images_for_calibration.append(img)
@@ -27,9 +28,12 @@ while True:
         logging.info("Start static_camera_calibration_function")
         cameraModel = static_camera_calibration_function(images_for_calibration)
         logging.info("Finish static_camera_calibration_function")
-        print("Camera model" + str(cameraModel.cameramtx))
+        print("Camera model" + str(cameraModel.newcameramtx))
         images_for_calibration = []
 
+
+    if cameraModel != None:
+        img = cameraModel.undistort_img(img)
 
 
     cv2.imshow('img', img)
