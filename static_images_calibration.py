@@ -52,9 +52,6 @@ else:
     print("There is no points. ERROR.")
 
 
-
-cv2.imshow('img',img)
-cv2.waitKey(0)
 h,  w = img.shape[:2]
 newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
 
@@ -64,9 +61,11 @@ dst = cv2.remap(img, mapx, mapy, cv2.INTER_LINEAR)
 # crop the image
 x, y, w, h = roi
 dst = dst[y:y+h, x:x+w]
-cv2.imshow('wynik', dst)
-cv2.imwrite('UndistortedResult.jpg', dst)  # Modify the file path here
+cv2.imshow('Undistorted', dst)
 cv2.waitKey(0)
+cv2.destroyAllWindows()
+cv2.imwrite('UndistortedResult.jpg', dst)  # Modify the file path here
+
 
 
 mean_error = 0
