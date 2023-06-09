@@ -9,14 +9,16 @@ logging.info('Loading list of image files...')
 images_paths = glob.glob('photos/Series1_*.jpg')
 logging.info("Number of found paths: " + str(len(images_paths)))
 
+
 # Statistic arrays and constants
+logging.info("Create statistic arrays and constants")
 CHESS_BOARD_SIZES = (9, 6)
 objpoints = []
 points_array = []
 objp = np.zeros((6*9,3), np.float32)
 objp[:,:2] = np.mgrid[0:9,0:6].T.reshape(-1,2)
 
-
+logging.info("Starting looping in images")
 for img_path in images_paths:
     img = cv2.imread(img_path)
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -40,13 +42,14 @@ cv2.destroyAllWindows()
 
 
 if len(points_array) > 0:
+    logging.info("Start camera calibration")
     ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, points_array, img_gray.shape[::-1], None, None)
     with open('parameters.txt','w') as file:
         file.write("RET"+ '\n' +str(ret) + '\n' + "MTX" + '\n' +str(mtx) + '\n' + "DIST" + '\n' + str(dist) + '\n' + 'RVECS' + '\n' + str(rvecs) + '\n' + "TVECS" + '\n' + str(tvecs))
         file.close()
     print("Successful calibration")
 else:
-    print("Error with points")
+    print("There is no points. ERROR.")
 
 
 
