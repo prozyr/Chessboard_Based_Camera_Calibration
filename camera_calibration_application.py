@@ -14,17 +14,26 @@ class CameraApp:
         self.window.wm_title("Camera calibration")
         self.window.config(background="#FFFFFF")
 
-        self.imageFrame = tk.Frame(self.window, width=600, height=500)
-        self.imageFrame.grid(row=0, column=0, padx=10, pady=2)
+        self.original_imageFrame = tk.Frame(self.window, width=600, height=500)
+        self.original_imageFrame.grid(row=0, column=0, padx=10, pady=2)
+
+        self.chessBoardDetection_imageFrame = tk.Frame(self.window, width=600, height=500)
+        self.chessBoardDetection_imageFrame.grid(row=0, column=1, padx=10, pady=2)
+
+        self.undistorted_imageFrame = tk.Frame(self.window, width=600, height=500)
+        self.undistorted_imageFrame.grid(row=0, column=2, padx=10, pady=2)
 
         self.cap = cv2.VideoCapture(1)
         self.counter = 0  # Licznik
 
-        self.display1 = tk.Label(self.imageFrame)
-        self.display1.grid(row=1, column=0, padx=10, pady=2)  # Display 1
+        self.display1 = tk.Label(self.original_imageFrame)
+        self.display1.grid(row=1, column=0, padx=10, pady=2)
 
-        self.display2 = tk.Label(self.imageFrame)
-        self.display2.grid(row=1, column=1, padx=10, pady=2)  # Display 2
+        self.display2 = tk.Label(self.chessBoardDetection_imageFrame)
+        self.display2.grid(row=1, column=1, padx=10, pady=2)
+
+        self.display3 = tk.Label(self.undistorted_imageFrame)
+        self.display3.grid(row=1, column=2, padx=10, pady=2)
 
         self.counter_label = tk.Label(self.window, text="Licznik: 0")
         self.counter_label.grid(row=2, column=0, padx=10, pady=2)
@@ -45,13 +54,21 @@ class CameraApp:
     def show_frame_wrapper(self):
         _, frame = self.cap.read()
         frame = cv2.flip(frame, 1)
+
         cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
         img = Image.fromarray(cv2image)
         imgtk = ImageTk.PhotoImage(image=img)
         self.display1.imgtk = imgtk
         self.display1.configure(image=imgtk)
-        self.display2.imgtk = imgtk
-        self.display2.configure(image=imgtk)
+
+        if self.cameraModel is not None:
+            frame = self.cameraModel.undistort_img(frame)
+
+        cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
+        img = Image.fromarray(cv2image)
+        imgtk = ImageTk.PhotoImage(image=img)
+        self.display3.imgtk2 = imgtk
+        self.display3.configure(image=imgtk)
 
         self.counter += 1
         self.counter_label.config(text="Licznik: {}".format(self.counter))
