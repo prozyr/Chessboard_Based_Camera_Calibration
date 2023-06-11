@@ -62,6 +62,7 @@ class CameraApp:
         self.display1.configure(image=imgtk)
 
         if self.cameraModel is not None:
+            print("mark1")
             frame = self.cameraModel.undistort_img(frame)
 
         cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
@@ -79,6 +80,7 @@ class CameraApp:
         cameraModel = static_camera_calibration_function(self.images_for_calibration)
         print("Camera model" + str(cameraModel.newcameramtx))
         self.images_for_calibration = []
+        self.cameraModel = cameraModel
 
     def add_image_for_calibration(self):
         _, frame = self.cap.read()
