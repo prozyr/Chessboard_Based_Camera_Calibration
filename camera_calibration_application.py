@@ -61,6 +61,17 @@ class CameraApp:
         self.display1.imgtk = imgtk
         self.display1.configure(image=imgtk)
 
+        frame2 = frame.copy()
+        gray = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
+        ret, corners = cv2.findChessboardCorners(gray, (9, 6), None)
+        if ret:
+            cv2.drawChessboardCorners(frame2, (9, 6), corners, ret)
+        cv2image = cv2.cvtColor(frame2, cv2.COLOR_BGR2RGBA)
+        img = Image.fromarray(cv2image)
+        imgtk = ImageTk.PhotoImage(image=img)
+        self.display2.imgtk2 = imgtk
+        self.display2.configure(image=imgtk)
+
         if self.cameraModel is not None:
             print("mark1")
             frame = self.cameraModel.undistort_img(frame)
