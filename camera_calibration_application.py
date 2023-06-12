@@ -21,23 +21,23 @@ class CameraApp:
         self.chessBoardDetection_imageFrame.grid(row=0, column=1, padx=10, pady=2)
 
         self.undistorted_imageFrame = tk.Frame(self.window, width=600, height=500)
-        self.undistorted_imageFrame.grid(row=0, column=2, padx=10, pady=2)
+        self.undistorted_imageFrame.grid(row=1, column=1, padx=10, pady=2)
 
         self.cap = cv2.VideoCapture(1)
         self.counter = 0  # Licznik
 
         self.display1 = tk.Label(self.original_imageFrame)
-        self.display1.grid(row=1, column=0, padx=10, pady=2)
+        self.display1.grid(row=0, column=0, padx=10, pady=2)
 
         self.display2 = tk.Label(self.chessBoardDetection_imageFrame)
-        self.display2.grid(row=1, column=1, padx=10, pady=2)
+        self.display2.grid(row=0, column=1, padx=10, pady=2)
 
         self.display3 = tk.Label(self.undistorted_imageFrame)
-        self.display3.grid(row=2, column=1, padx=10, pady=2)
+        self.display3.grid(row=1, column=1, padx=10, pady=2)
 
         ##Bottom frame
         self.bottom_frame = tk.Frame(self.window, width=600, height=200)
-        self.bottom_frame.grid(row=2, column=0, padx=10, pady=5)
+        self.bottom_frame.grid(row=1, column=0, padx=10, pady=5)
 
         self.counter_label = tk.Label(self.bottom_frame, text="Frame counter: 0")
         self.counter_label.grid(row=0, column=0, padx=10, pady=2)
