@@ -12,7 +12,7 @@ class CameraApp:
 
         self.window = tk.Tk()
         self.window.wm_title("Camera calibration")
-        self.window.config(background="#FFFFFF")
+        self.window.config(background="#263A52")
 
         self.original_imageFrame = tk.Frame(self.window, width=600, height=500)
         self.original_imageFrame.grid(row=0, column=0, padx=10, pady=2)
@@ -33,20 +33,25 @@ class CameraApp:
         self.display2.grid(row=1, column=1, padx=10, pady=2)
 
         self.display3 = tk.Label(self.undistorted_imageFrame)
-        self.display3.grid(row=1, column=2, padx=10, pady=2)
+        self.display3.grid(row=2, column=1, padx=10, pady=2)
 
-        self.counter_label = tk.Label(self.window, text="Licznik: 0")
-        self.counter_label.grid(row=2, column=0, padx=10, pady=2)
+        ##Bottom frame
+        self.bottom_frame = tk.Frame(self.window, width=600, height=200)
+        self.bottom_frame.grid(row=2, column=0, padx=10, pady=5)
 
-        self.start_button = tk.Button(self.window, text="Start", command=self.start_button_click)
+        self.counter_label = tk.Label(self.bottom_frame, text="Frame counter: 0")
+        self.counter_label.grid(row=0, column=0, padx=10, pady=2)
+
+        self.add_image_for_calibration_button = tk.Button(self.bottom_frame, text="Add image for calibration", command=self.add_image_for_calibration)
+        self.add_image_for_calibration_button.grid(row=1, column=0, padx=10, pady=2)
+
+        self.images_for_calibration_label = tk.Label(self.bottom_frame, text="Images for calibration: 0")
+        self.images_for_calibration_label.grid(row=1, column=1, padx=10, pady=2)
+
+        self.start_button = tk.Button(self.bottom_frame, text="Start", command=self.start_button_click)
         self.start_button.grid(row=2, column=1, padx=10, pady=2)
 
-        self.add_image_for_calibration_button = tk.Button(self.window, text="Add image for calibration", command=self.add_image_for_calibration)
-        self.add_image_for_calibration_button.grid(row=2, column=2, padx=10, pady=2)
 
-
-        self.sliderFrame = tk.Frame(self.window, width=600, height=100)
-        self.sliderFrame.grid(row=600, column=0, padx=10, pady=2)
 
         self.images_for_calibration = []
         self.show_frame_wrapper()
@@ -83,7 +88,7 @@ class CameraApp:
         self.display3.configure(image=imgtk)
 
         self.counter += 1
-        self.counter_label.config(text="Licznik: {}".format(self.counter))
+        self.counter_label.config(text="Frame counter: {}".format(self.counter))
 
         self.window.after(10, self.show_frame_wrapper)
 
@@ -96,6 +101,8 @@ class CameraApp:
     def add_image_for_calibration(self):
         _, frame = self.cap.read()
         self.images_for_calibration.append(frame)
+        self.images_for_calibration_label.config(text="Images for calibration: {}".format(
+            len(self.images_for_calibration)))
 
     def run(self):
         self.window.mainloop()
