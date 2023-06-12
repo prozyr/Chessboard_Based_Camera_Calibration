@@ -2,8 +2,8 @@ import numpy as np
 import cv2
 import tkinter as tk
 from PIL import Image, ImageTk, ImageDraw
-from static_camera_calibration_function import CameraModel
-from static_camera_calibration_function import calibrate_camera
+from Calibration import CameraModel
+from Calibration import Calibration
 
 
 class CameraApplication:
@@ -99,7 +99,7 @@ class CameraApplication:
         self.window.after(10, self.show_frame_wrapper)
 
     def calibrate_camera(self):
-        cameraModel = calibrate_camera(self.images_for_calibration, self.chessboard_size)
+        cameraModel = Calibration( self.chessboard_size, self.images_for_calibration).calibrate_camera()
         print("Camera model" + str(cameraModel.newcameramtx))
         self.images_for_calibration = []
         self.cameraModel = cameraModel
