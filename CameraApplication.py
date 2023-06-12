@@ -8,12 +8,12 @@ from Calibration import Calibration
 
 class CameraApplication:
 
-    def __init__(self, chessboard_size):
+    def __init__(self, chessboard_size, camera_number):
 
         #Variables
         self.chessboard_size = chessboard_size
         self.cameraModel = None
-        self.cap = cv2.VideoCapture(1)
+        self.cap = cv2.VideoCapture(camera_number)
         self.counter = 0  # Licznik
 
         #UI
