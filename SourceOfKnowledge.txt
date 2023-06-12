@@ -1,8 +1,0 @@
-Good start point, but there aren't any calculations(he uses cv.calibrateCamera() function from chess tiles corners):
-https://www.youtube.com/watch?v=3h7wgR5fYik
-
-Complex calculation contained course:
-https://www.researchgate.net/publication/303233579_Zhang's_Camera_Calibration_Algorithm_In-Depth_Tutorial_and_Implementation
-
-And lecture about calculations:
-https://www.youtube.com/watch?v=-9He7Nu3u8s
