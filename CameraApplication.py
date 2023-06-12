@@ -1,13 +1,16 @@
 import numpy as np
 import cv2
 import tkinter as tk
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageDraw
 from static_camera_calibration_function import CameraModel
-from static_camera_calibration_function import static_camera_calibration_function
+from static_camera_calibration_function import calibrate_camera
 
-class CameraApp:
-    def __init__(self):
 
+class CameraApplication:
+
+    def __init__(self, chessboard_size):
+
+        self.chessboard_size = chessboard_size
         self.cameraModel = None
 
         self.window = tk.Tk()
@@ -48,8 +51,11 @@ class CameraApp:
         self.images_for_calibration_label = tk.Label(self.bottom_frame, text="Images for calibration: 0")
         self.images_for_calibration_label.grid(row=1, column=1, padx=10, pady=2)
 
-        self.start_button = tk.Button(self.bottom_frame, text="Start", command=self.start_button_click)
-        self.start_button.grid(row=2, column=1, padx=10, pady=2)
+        self.remove_all_images_for_calibration_button = tk.Button(self.bottom_frame, text="Remove all images for calibration", command=self.remove_all_images_for_calibration)
+        self.remove_all_images_for_calibration_button.grid(row=1, column=2, padx=10, pady=2)
+
+        self.camera_calibration_button = tk.Button(self.bottom_frame, text="Calibrate camera", command=self.calibrate_camera)
+        self.camera_calibration_button.grid(row=2, column=1, padx=10, pady=2)
 
 
 
@@ -78,7 +84,6 @@ class CameraApp:
         self.display2.configure(image=imgtk)
 
         if self.cameraModel is not None:
-            print("mark1")
             frame = self.cameraModel.undistort_img(frame)
 
         cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
@@ -92,8 +97,8 @@ class CameraApp:
 
         self.window.after(10, self.show_frame_wrapper)
 
-    def start_button_click(self):
-        cameraModel = static_camera_calibration_function(self.images_for_calibration)
+    def calibrate_camera(self):
+        cameraModel = calibrate_camera(self.images_for_calibration, self.chessboard_size)
         print("Camera model" + str(cameraModel.newcameramtx))
         self.images_for_calibration = []
         self.cameraModel = cameraModel
@@ -104,8 +109,12 @@ class CameraApp:
         self.images_for_calibration_label.config(text="Images for calibration: {}".format(
             len(self.images_for_calibration)))
 
+    def remove_all_images_for_calibration(self):
+        self.images_for_calibration = []
+        self.images_for_calibration_label.config(text="Images for calibration: {}".format(
+            len(self.images_for_calibration)))
+
     def run(self):
         self.window.mainloop()
 
-app = CameraApp()
-app.run()
+
