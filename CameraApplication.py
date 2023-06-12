@@ -10,33 +10,34 @@ class CameraApplication:
 
     def __init__(self, chessboard_size):
 
+        #Variables
         self.chessboard_size = chessboard_size
         self.cameraModel = None
+        self.cap = cv2.VideoCapture(1)
+        self.counter = 0  # Licznik
 
+        #UI
         self.window = tk.Tk()
         self.window.wm_title("Camera calibration")
         self.window.config(background="#263A52")
 
         self.original_imageFrame = tk.Frame(self.window, width=600, height=500)
-        self.original_imageFrame.grid(row=0, column=0, padx=10, pady=2)
+        self.original_imageFrame.grid(row=0, column=0, padx=2, pady=2)
 
         self.chessBoardDetection_imageFrame = tk.Frame(self.window, width=600, height=500)
-        self.chessBoardDetection_imageFrame.grid(row=0, column=1, padx=10, pady=2)
+        self.chessBoardDetection_imageFrame.grid(row=0, column=1, padx=2, pady=2)
 
         self.undistorted_imageFrame = tk.Frame(self.window, width=600, height=500)
-        self.undistorted_imageFrame.grid(row=1, column=1, padx=10, pady=2)
-
-        self.cap = cv2.VideoCapture(1)
-        self.counter = 0  # Licznik
+        self.undistorted_imageFrame.grid(row=1, column=1, padx=2, pady=2)
 
         self.display1 = tk.Label(self.original_imageFrame)
-        self.display1.grid(row=0, column=0, padx=10, pady=2)
+        self.display1.grid(row=0, column=0, padx=2, pady=2)
 
         self.display2 = tk.Label(self.chessBoardDetection_imageFrame)
-        self.display2.grid(row=0, column=1, padx=10, pady=2)
+        self.display2.grid(row=0, column=1, padx=2, pady=2)
 
         self.display3 = tk.Label(self.undistorted_imageFrame)
-        self.display3.grid(row=1, column=1, padx=10, pady=2)
+        self.display3.grid(row=1, column=1, padx=2, pady=2)
 
         ##Bottom frame
         self.bottom_frame = tk.Frame(self.window, width=600, height=200)
