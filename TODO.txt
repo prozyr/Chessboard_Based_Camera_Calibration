@@ -1,0 +1,6 @@
+1. Obliczanie nowych parametrów kamery w drugim wątku // linijka 33. cameraModel = static_camera_calibration_function(images_for_calibration)
+   // Chodzi o to, żeby nowe parametry kamery były obliczane w innym wątku i po tym jak wykonają się obliczenia aktualizowany był model kamery używany do undistort
+2. Z kilku sekund pobrać X losowych obrazów OR Zostawić
+3. Wyświetlanie ERROR // Maciek W.
+4. Refaktoryzacja, podział na klasy i funkcje  // Dawid
+5. Ewentualne UI, gdzie będzie można załączać kamerę, wyświtalć błąd
