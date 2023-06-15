@@ -24,7 +24,7 @@ class CameraModel:
             error = cv2.norm(self.real_points_array[i], imgpoints2, cv2.NORM_L2) / len(imgpoints2)
             mean_error += error
         total_error = mean_error/len(self.objpoints)
-        print( "total error: {}".format(mean_error/len(self.objpoints)))
+        print( "total error: {}".format(total_error))
         return total_error
 
     def live_img_error(self, img_gray, corners):
@@ -40,7 +40,8 @@ class CameraModel:
                                          (-1, -1),
                                          (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001))
         real_points_array.append(cornersSubPix)
-        imgpoints2, _ = cv2.projectPoints(objpoints[0], self.rvecs[0], self.tvecs[0], self.mtx, self.dist)
+        _, _, _, rvecs, tvecs = cv2.calibrateCamera(objpoints, real_points_array, img_gray.shape[::-1], None, None)
+        imgpoints2, _ = cv2.projectPoints(objpoints[0], rvecs[0], tvecs[0], self.mtx, self.dist)
         error = cv2.norm(real_points_array[0], imgpoints2, cv2.NORM_L2) / len(imgpoints2)
 
         return error
