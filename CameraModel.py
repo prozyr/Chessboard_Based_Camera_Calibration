@@ -21,11 +21,29 @@ class CameraModel:
         mean_error = 0
         for i in range(len(self.objpoints)):
             imgpoints2, _ = cv2.projectPoints(self.objpoints[i], self.rvecs[i], self.tvecs[i], self.mtx, self.dist)
-        error = cv2.norm(self.real_points_array[i], imgpoints2, cv2.NORM_L2) / len(imgpoints2)
-        mean_error += error
+            error = cv2.norm(self.real_points_array[i], imgpoints2, cv2.NORM_L2) / len(imgpoints2)
+            mean_error += error
         total_error = mean_error/len(self.objpoints)
         print( "total error: {}".format(mean_error/len(self.objpoints)))
         return total_error
+
+    def live_img_error(self, img_gray, corners):
+        objpoints = []
+        real_points_array = []
+        objp = np.zeros((self.chessboard_size[0] * self.chessboard_size[1], 3), np.float32)
+        objp[:, :2] = np.mgrid[0:self.chessboard_size[0], 0:self.chessboard_size[1]].T.reshape(-1, 2)
+
+        objpoints.append(objp)
+        cornersSubPix = cv2.cornerSubPix(img_gray,
+                                         corners,
+                                         (11, 11),
+                                         (-1, -1),
+                                         (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001))
+        real_points_array.append(cornersSubPix)
+        imgpoints2, _ = cv2.projectPoints(objpoints[0], self.rvecs[0], self.tvecs[0], self.mtx, self.dist)
+        error = cv2.norm(real_points_array[0], imgpoints2, cv2.NORM_L2) / len(imgpoints2)
+
+        return error
 
     def undistort_img(self, img):
         h, w = img.shape[:2]

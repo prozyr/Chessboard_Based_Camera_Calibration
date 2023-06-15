@@ -98,9 +98,12 @@ class CameraApplication:
 
         frame2 = frame.copy()
         gray = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
-        ret, corners = cv2.findChessboardCorners(gray,self.chessboard_size, None)
+        ret, corners = cv2.findChessboardCorners(gray, self.chessboard_size, None)
         if ret:
-            cv2.drawChessboardCorners(frame2,self.chessboard_size, corners, ret)
+            cv2.drawChessboardCorners(frame2, self.chessboard_size, corners, ret)
+            if self.cameraModel is not None:
+                print("Live Error: {}".format(self.cameraModel.live_img_error(gray, corners)))
+
         cv2image = cv2.cvtColor(frame2, cv2.COLOR_BGR2RGBA)
         img = Image.fromarray(cv2image)
         imgtk = ImageTk.PhotoImage(image=img)
@@ -127,6 +130,8 @@ class CameraApplication:
         self.text_intrinsic.insert(tk.END, cameraModel.mtx)
         self.text_newmtx.insert(tk.END, str(cameraModel.newcameramtx))
         self.text_dst.insert(tk.END, cameraModel.dist)
+
+        print(cameraModel.mean_error_for_images_used_for_calibration())
 
         self.images_for_calibration = []
         self.cameraModel = cameraModel
