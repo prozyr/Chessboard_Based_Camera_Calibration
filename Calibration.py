@@ -49,3 +49,5 @@ class Calibration:
         newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
 
         return CameraModel(newcameramtx,roi,objpoints,points_array,mtx,dist,rvecs,tvecs)
+
+

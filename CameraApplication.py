@@ -8,26 +8,27 @@ from Calibration import Calibration
 
 class CameraApplication:
 
-    def __init__(self, chessboard_size, camera_number):
+    def __init__(self, chessboard_size, camera_number, height, width):
 
         #Variables
         self.chessboard_size = chessboard_size
         self.cameraModel = None
+        self.height = height
+        self.width = width
         self.cap = cv2.VideoCapture(camera_number)
         self.counter = 0  # Licznik
-
         #UI
         self.window = tk.Tk()
         self.window.wm_title("Camera calibration")
         self.window.config(background="#263A52")
 
-        self.original_imageFrame = tk.Frame(self.window, width=600, height=500)
+        self.original_imageFrame = tk.Frame(self.window, width=self.width, height=self.height)
         self.original_imageFrame.grid(row=0, column=0, padx=2, pady=2)
 
-        self.chessBoardDetection_imageFrame = tk.Frame(self.window, width=600, height=500)
+        self.chessBoardDetection_imageFrame = tk.Frame(self.window, width=self.width, height=self.height)
         self.chessBoardDetection_imageFrame.grid(row=0, column=1, padx=2, pady=2)
 
-        self.undistorted_imageFrame = tk.Frame(self.window, width=600, height=500)
+        self.undistorted_imageFrame = tk.Frame(self.window, width=self.width, height=self.height)
         self.undistorted_imageFrame.grid(row=1, column=1, padx=2, pady=2)
 
         self.display1 = tk.Label(self.original_imageFrame)
@@ -40,7 +41,7 @@ class CameraApplication:
         self.display3.grid(row=1, column=1, padx=2, pady=2)
 
         ##Bottom frame
-        self.bottom_frame = tk.Frame(self.window, width=600, height=200)
+        self.bottom_frame = tk.Frame(self.window, width=self.width, height=self.height / 2)
         self.bottom_frame.grid(row=1, column=0, padx=10, pady=5)
 
         self.counter_label = tk.Label(self.bottom_frame, text="Frame counter: 0")
@@ -58,13 +59,12 @@ class CameraApplication:
         self.camera_calibration_button = tk.Button(self.bottom_frame, text="Calibrate camera", command=self.calibrate_camera)
         self.camera_calibration_button.grid(row=2, column=1, padx=10, pady=2)
 
-
-
         self.images_for_calibration = []
         self.show_frame_wrapper()
 
     def show_frame_wrapper(self):
         _, frame = self.cap.read()
+        frame = cv2.resize(frame, (self.width, self.height))
         frame = cv2.flip(frame, 1)
 
         cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
@@ -75,9 +75,9 @@ class CameraApplication:
 
         frame2 = frame.copy()
         gray = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
-        ret, corners = cv2.findChessboardCorners(gray, (9, 6), None)
+        ret, corners = cv2.findChessboardCorners(gray,self.chessboard_size, None)
         if ret:
-            cv2.drawChessboardCorners(frame2, (9, 6), corners, ret)
+            cv2.drawChessboardCorners(frame2,self.chessboard_size, corners, ret)
         cv2image = cv2.cvtColor(frame2, cv2.COLOR_BGR2RGBA)
         img = Image.fromarray(cv2image)
         imgtk = ImageTk.PhotoImage(image=img)
