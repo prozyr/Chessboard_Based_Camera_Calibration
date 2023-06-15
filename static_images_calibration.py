@@ -54,9 +54,11 @@ else:
 h,  w = img.shape[:2]
 newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
 
+
+dog = cv2.imread('photos/dog.png')
 # undistort
 mapx, mapy = cv2.initUndistortRectifyMap(mtx, dist, None, newcameramtx, (w,h), 5)
-dst = cv2.remap(img, mapx, mapy, cv2.INTER_LINEAR)
+dst = cv2.remap(dog, mapx, mapy, cv2.INTER_LINEAR)
 # crop the image
 x, y, w, h = roi
 dst = dst[y:y+h, x:x+w]

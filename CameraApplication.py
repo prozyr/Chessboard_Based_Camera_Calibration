@@ -2,13 +2,14 @@ import numpy as np
 import cv2
 import tkinter as tk
 from PIL import Image, ImageTk, ImageDraw
-from Calibration import CameraModel
-from Calibration import Calibration
-
+from CameraModel import CameraModel, calibrate_camera
+import pprint
 
 class CameraApplication:
 
     def __init__(self, chessboard_size, camera_number, height, width):
+        np.set_printoptions(floatmode='fixed', precision=4)
+        self.pp = pprint.PrettyPrinter(indent=4)
 
         #Variables
         self.chessboard_size = chessboard_size
@@ -44,27 +45,49 @@ class CameraApplication:
         self.bottom_frame = tk.Frame(self.window, width=self.width, height=self.height / 2)
         self.bottom_frame.grid(row=1, column=0, padx=10, pady=5)
 
-        self.counter_label = tk.Label(self.bottom_frame, text="Frame counter: 0")
+        ##Buttons frame
+        self.buttons_frame = tk.Frame(self.bottom_frame, width=self.width, height=self.height / 2)
+        self.buttons_frame.grid(row=0, column=0, padx=10, pady=5)
+
+        self.counter_label = tk.Label(self.buttons_frame, text="Frame counter: 0")
         self.counter_label.grid(row=0, column=0, padx=10, pady=2)
 
-        self.add_image_for_calibration_button = tk.Button(self.bottom_frame, text="Add image for calibration", command=self.add_image_for_calibration)
+        self.add_image_for_calibration_button = tk.Button(self.buttons_frame, text="Add image for calibration", command=self.add_image_for_calibration)
         self.add_image_for_calibration_button.grid(row=1, column=0, padx=10, pady=2)
 
-        self.images_for_calibration_label = tk.Label(self.bottom_frame, text="Images for calibration: 0")
+        self.images_for_calibration_label = tk.Label(self.buttons_frame, text="Images for calibration: 0")
         self.images_for_calibration_label.grid(row=1, column=1, padx=10, pady=2)
 
-        self.remove_all_images_for_calibration_button = tk.Button(self.bottom_frame, text="Remove all images for calibration", command=self.remove_all_images_for_calibration)
+        self.remove_all_images_for_calibration_button = tk.Button(self.buttons_frame, text="Remove all images for calibration", command=self.remove_all_images_for_calibration)
         self.remove_all_images_for_calibration_button.grid(row=1, column=2, padx=10, pady=2)
 
-        self.camera_calibration_button = tk.Button(self.bottom_frame, text="Calibrate camera", command=self.calibrate_camera)
+        self.camera_calibration_button = tk.Button(self.buttons_frame, text="Calibrate camera", command=self.calibrate_camera)
         self.camera_calibration_button.grid(row=2, column=1, padx=10, pady=2)
+
+        ##Data frame
+        self.data_frame = tk.Frame(self.bottom_frame, width=self.width, height=self.height / 2)
+        self.data_frame.grid(row=1, column=0, padx=10, pady=5)
+
+        self.label_intrinsic = tk.Label(self.data_frame, text="mtx - intrinsic")
+        self.label_intrinsic.grid(row=3, column=0, padx=10, pady=2)
+        self.text_intrinsic = tk.Text(self.data_frame, height=3, width=40, bg="light yellow")
+        self.text_intrinsic.grid(row=4, column=0, padx=10, pady=2)
+
+        self.label_newmtx = tk.Label(self.data_frame, text="new optimal mtx")
+        self.label_newmtx.grid(row=5, column=0, padx=10, pady=2)
+        self.text_newmtx = tk.Text(self.data_frame, height=3, width=40, bg="light yellow")
+        self.text_newmtx.grid(row=6, column=0, padx=10, pady=2)
+
+        self.label_dst = tk.Label(self.data_frame, text="dst - distortion coefficients")
+        self.label_dst.grid(row=7, column=0, padx=10, pady=2)
+        self.text_dst = tk.Text(self.data_frame, height=3, width=40, bg="light yellow")
+        self.text_dst.grid(row=8, column=0, padx=10, pady=2)
 
         self.images_for_calibration = []
         self.show_frame_wrapper()
 
     def show_frame_wrapper(self):
         _, frame = self.cap.read()
-        frame = cv2.resize(frame, (self.width, self.height))
         frame = cv2.flip(frame, 1)
 
         cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
@@ -99,8 +122,12 @@ class CameraApplication:
         self.window.after(10, self.show_frame_wrapper)
 
     def calibrate_camera(self):
-        cameraModel = Calibration( self.chessboard_size, self.images_for_calibration).calibrate_camera()
-        print("Camera model" + str(cameraModel.newcameramtx))
+        cameraModel = calibrate_camera(self.images_for_calibration, self.chessboard_size)
+
+        self.text_intrinsic.insert(tk.END, cameraModel.mtx)
+        self.text_newmtx.insert(tk.END, str(cameraModel.newcameramtx))
+        self.text_dst.insert(tk.END, cameraModel.dist)
+
         self.images_for_calibration = []
         self.cameraModel = cameraModel
 
