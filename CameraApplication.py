@@ -64,6 +64,9 @@ class CameraApplication:
         self.camera_calibration_button = tk.Button(self.buttons_frame, text="Calibrate camera", command=self.calibrate_camera)
         self.camera_calibration_button.grid(row=2, column=1, padx=10, pady=2)
 
+        self.define_chessboard_size = tk.Button(self.bottom_frame, text="Define chessboard size", command=self.clicker)
+        self.define_chessboard_size.grid(row=2, column=2, padx=10, pady=2)
+
         ##Data frame
         self.data_frame = tk.Frame(self.bottom_frame, width=self.width, height=self.height / 2)
         self.data_frame.grid(row=1, column=0, padx=10, pady=5)
@@ -149,5 +152,34 @@ class CameraApplication:
 
     def run(self):
         self.window.mainloop()
+
+    def clicker(self):
+        global pop
+        pop = tk.Toplevel(self.window)
+        pop.title("My size checboards")
+        pop.geometry("400x300")
+        pop.config(bg="gray")
+
+        pop_label = tk.Label(pop, text="Size")
+        pop_label.pack(pady=10)
+        my_frame = tk.Frame(pop, bg="gray")
+        my_frame.pack(pady=5)
+        tk.Label(my_frame, text="Enter First Number", font=('Calibri 10')).pack()
+        a = tk.Entry(my_frame, width=35)
+        a.pack(pady=5)
+        tk.Label(my_frame, text="Enter Second Number", font=('Calibri 10')).pack()
+        b = tk.Entry(my_frame, width=35)
+        b.pack(pady=5)
+        OK = tk.Button(my_frame, text="OK", command=lambda: self.number(a, b), bg="white")
+        OK.pack(pady=5)
+
+    def number(self, a, b):
+        try:
+            int(a.get())
+            int(b.get())
+            self.chessboard_size = (int(a.get()), int(b.get()))
+            pop.destroy()
+        except ValueError:
+            tk.messagebox.showerror(title="ERROR", message="Error")
 
 
