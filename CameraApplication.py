@@ -4,6 +4,8 @@ import tkinter as tk
 from PIL import Image, ImageTk, ImageDraw
 from CameraModel import CameraModel, calibrate_camera
 import pprint
+import random
+from tkinter import font
 
 class CameraApplication:
 
@@ -52,6 +54,9 @@ class CameraApplication:
         self.counter_label = tk.Label(self.buttons_frame, text="Frame counter: 0")
         self.counter_label.grid(row=0, column=0, padx=10, pady=2)
 
+        self.define_chessboard_size = tk.Button(self.buttons_frame, text="Define chessboard size", command=self.clicker)
+        self.define_chessboard_size.grid(row=0, column=1, padx=10, pady=2)
+
         self.add_image_for_calibration_button = tk.Button(self.buttons_frame, text="Add image for calibration", command=self.add_image_for_calibration)
         self.add_image_for_calibration_button.grid(row=1, column=0, padx=10, pady=2)
 
@@ -64,8 +69,7 @@ class CameraApplication:
         self.camera_calibration_button = tk.Button(self.buttons_frame, text="Calibrate camera", command=self.calibrate_camera)
         self.camera_calibration_button.grid(row=2, column=1, padx=10, pady=2)
 
-        self.define_chessboard_size = tk.Button(self.bottom_frame, text="Define chessboard size", command=self.clicker)
-        self.define_chessboard_size.grid(row=2, column=2, padx=10, pady=2)
+
 
         ##Data frame
         self.data_frame = tk.Frame(self.bottom_frame, width=self.width, height=self.height / 2)
@@ -86,6 +90,21 @@ class CameraApplication:
         self.text_dst = tk.Text(self.data_frame, height=3, width=40, bg="light yellow")
         self.text_dst.grid(row=8, column=0, padx=10, pady=2)
 
+        self.label_live_error = tk.Label(self.bottom_frame, text="Live error")
+        self.label_live_error.grid(row=9, column=0, padx=10, pady=2)
+        self.text_live_error = tk.Label(self.bottom_frame, text="Calibrate camera previous")
+        self.bold_font = font.Font(self.text_live_error, self.text_live_error.cget("font"))
+        self.bold_font.configure(weight="bold", size=14)  # Adjust the size as needed
+        self.text_live_error.configure(font=self.bold_font)
+        self.text_live_error.grid(row=10, column=0, padx=10, pady=2)
+
+        self.label_error = tk.Label(self.bottom_frame, text="Mean error of images used in calibration")
+        self.label_error.grid(row=11, column=0, padx=10, pady=2)
+        self.text_error = tk.Text(self.bottom_frame, height=1, width=40, bg="light yellow")
+        self.text_error.grid(row=12, column=0, padx=10, pady=2)
+
+
+
         self.images_for_calibration = []
         self.show_frame_wrapper()
 
@@ -105,7 +124,8 @@ class CameraApplication:
         if ret:
             cv2.drawChessboardCorners(frame2, self.chessboard_size, corners, ret)
             if self.cameraModel is not None:
-                print("Live Error: {}".format(self.cameraModel.live_img_error(gray, corners)))
+                if random.random() < 0.3:
+                    self.text_live_error.config(text="{}".format(self.cameraModel.live_img_error(gray, corners)))
 
         cv2image = cv2.cvtColor(frame2, cv2.COLOR_BGR2RGBA)
         img = Image.fromarray(cv2image)
@@ -134,7 +154,8 @@ class CameraApplication:
         self.text_newmtx.insert(tk.END, str(cameraModel.newcameramtx))
         self.text_dst.insert(tk.END, cameraModel.dist)
 
-        print(cameraModel.mean_error_for_images_used_for_calibration())
+        self.text_error.delete("1.0", tk.END)
+        self.text_error.insert(tk.END, "{}".format(cameraModel.mean_error_for_images_used_for_calibration()))
 
         self.images_for_calibration = []
         self.cameraModel = cameraModel
@@ -156,7 +177,7 @@ class CameraApplication:
     def clicker(self):
         global pop
         pop = tk.Toplevel(self.window)
-        pop.title("My size checboards")
+        pop.title("Set the size of chessboard")
         pop.geometry("400x300")
         pop.config(bg="gray")
 
