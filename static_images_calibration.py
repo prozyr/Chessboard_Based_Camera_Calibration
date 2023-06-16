@@ -6,16 +6,16 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 logging.info('Loading list of image files...')
-images_paths = glob.glob('photos/Series1_*.jpg')
+images_paths = glob.glob('images_smaller/*.jpg')
 logging.info("Number of found paths: " + str(len(images_paths)))
 
 # Statistic arrays and constants
 logging.info("Create statistic arrays and constants")
-CHESS_BOARD_SIZES = (9, 6)
+CHESS_BOARD_SIZES = (7, 7)
 objpoints = []
 points_array = []
-objp = np.zeros((6*9,3), np.float32)
-objp[:,:2] = np.mgrid[0:9,0:6].T.reshape(-1,2)
+objp = np.zeros((7*7,3), np.float32)
+objp[:,:2] = np.mgrid[0:7,0:7].T.reshape(-1,2)
 
 logging.info("Starting looping in images")
 for img_path in images_paths:
@@ -55,10 +55,9 @@ h,  w = img.shape[:2]
 newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
 
 
-dog = cv2.imread('photos/dog.png')
 # undistort
 mapx, mapy = cv2.initUndistortRectifyMap(mtx, dist, None, newcameramtx, (w,h), 5)
-dst = cv2.remap(dog, mapx, mapy, cv2.INTER_LINEAR)
+dst = cv2.remap(img, mapx, mapy, cv2.INTER_LINEAR)
 # crop the image
 x, y, w, h = roi
 dst = dst[y:y+h, x:x+w]
