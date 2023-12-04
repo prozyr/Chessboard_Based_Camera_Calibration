@@ -10,14 +10,15 @@ There are two ways of camera calibration
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; text-align: center;">
   <div>
-    <img src="./photos/Series1_1.jpg" width="45%"/>
-      <p><strong>Image before</strong></p>
+    <img src="./photos/Series1_1.jpg" width="400"/>
+    <p><strong>Image before</strong></p>
   </div>
   <div>
-    <img src="./UndistortedResult.jpg" width="45%"/>
+    <img src="./UndistortedResult.jpg" width="400"/>
     <p><strong>Image after</strong></p>
   </div>
 </div>
+
 
 
 ## Static camera calibration  
