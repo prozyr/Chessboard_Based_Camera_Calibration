@@ -8,14 +8,14 @@ There are two ways of camera calibration
 *Static camera calibration
 *Live camera calibration
 
-<h1>Image example of fishEye distortion</h1>
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); text-align: center;">
+<h3>Image example of fishEye distortion</h3>
+<div style="display: grid; grid-template-columns: repeat(2, auto); text-align: center;">
   <div>
-    <img src="./photos/Series1_1.jpg" width="400"/>
+    <img src="./photos/Series1_1.jpg" width="40%"/>
     <p><strong>Image before</strong></p>
   </div>
   <div>
-    <img src="./UndistortedResult.jpg" width="400"/>
+    <img src="./UndistortedResult.jpg" width="40%"/>
     <p><strong>Image after</strong></p>
   </div>
 </div>
