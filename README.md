@@ -11,11 +11,11 @@ There are two ways of camera calibration
 <div style="display: flex; flex-direction: column; align-items: center;">
   <div style="display: flex; justify-content: space-around; width: 100%;">
     <div style="text-align: center;">
-      <img src="./photos/Series1_1.jpg" width="400"/>
+      <img src="./photos/Series1_1.jpg" width="45%"/>
       <p><strong>Image before</strong></p>
     </div>
     <div style="text-align: center;">
-      <img src="./UndistortedResult.jpg" width="400"/>
+      <img src="./UndistortedResult.jpg" width="45%"/>
       <p><strong>Image after</strong></p>
     </div>
   </div>
