@@ -8,8 +8,10 @@ There are two ways of camera calibration
 *Static camera calibration
 *Live camera calibration
 
-![D image](./photos/Series1_1.jpg)
-![uD image](./UndistortedResult.jpg)
+<div style="display: flex; justify-content: space-between;">
+  <img src="./photos/Series1_1.jpg" width="400"/>
+  <img src="./UndistortedResult.jpg" width="400"/>
+</div>
 
 ## Static camera calibration  
 As an input to camera calibration program you provide a photo or a series of photos which are distored. As an output program provides an undistorted photo and a text file with new calculated camera parameters.
