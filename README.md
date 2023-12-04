@@ -7,7 +7,6 @@ Based on several shots of the chessboard, distortion-correcting parameters are c
 There are two ways of camera calibration
 *Static camera calibration
 *Live camera calibration
-##
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; text-align: center;">
   <div>
