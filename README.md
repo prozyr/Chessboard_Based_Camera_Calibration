@@ -5,7 +5,7 @@ Based on several shots of the chessboard, distortion-correcting parameters are c
 
 
 There are two ways of camera calibration
-- *Static Camera Calibration*:
+*Static Camera Calibration:
 -*Live camera calibration
 
 <h3 style="align-items: center; text-align: center;">Image example of fishEye distortion</h3>
