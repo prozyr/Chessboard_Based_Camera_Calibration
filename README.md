@@ -28,7 +28,7 @@ As an input to camera calibration program you provide a photo or a series of pho
 For this mode to run having working camera is required. Running the program provides you with GUI made with TKinter python library. 
 
 <div>
-<img src = " ![image](https://github.com/prozyr/CVAPR---projekt/assets/128191169/1d11973a-958c-4f16-a8d9-150632514811)" /> 
+![image](https://github.com/prozyr/CVAPR---projekt/assets/128191169/1d11973a-958c-4f16-a8d9-150632514811)"
 </div>
 
 GUI consists of 4 panels. Original frame, frame with detected chessboard corners needed for camera calibration algorythm, output undistorted frame and control panel, that lets you add images based of which new camera parametres will be calculated, delete all of them  and button which calibrate camera based of caputred frames.  <br>
