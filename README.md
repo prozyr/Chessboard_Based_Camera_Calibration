@@ -31,9 +31,9 @@ Here will be o GUI photo
 GUI consists of 4 panels. Original frame, frame with detected chessboard corners needed for camera calibration algorythm, output undistorted frame and control panel, that lets you add images based of which new camera parametres will be calculated, delete all of them  and button which calibrate camera based of caputred frames.  
 
 ## Used tools
-*Python
-*Various python Libraries (OpenCV,TKinter,Numpy)
-*Chessboard camera calibration algorythm
+- Python
+- Various python Libraries (OpenCV,TKinter,Numpy)
+- Chessboard camera calibration algorythm
 
 
 
