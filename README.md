@@ -10,12 +10,11 @@ There are two ways of camera calibration
 
 ## Table of Contents
 
-
 - [Static camera calibration](#static-camera-calibration)
 - [Live camera calibration](#live-camera-calibration)
 - [License](#license)
 - [Installation](#installation)
-- 
+ 
 <h3 style="align-items: center; text-align: center;">Image example of fishEye distortion</h3>
 <div style="display: grid; grid-template-columns: repeat(2, auto); text-align: center; width: 90%; gap: 20px;">
   <div>
@@ -52,6 +51,6 @@ Install packages with the package manager manually if not already downloaded.
     $ pip install tk
     $ pip install opencv-python
 
-##License
+### License
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 - **[MIT license](http://opensource.org/licenses/mit-license.php)**
