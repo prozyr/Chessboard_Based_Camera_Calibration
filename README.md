@@ -27,15 +27,16 @@ As an input to camera calibration program you provide a photo or a series of pho
 ## Live camera calibration
 For this mode to run having working camera is required. Running the program provides you with GUI made with TKinter python library. 
 
-Here will be o GUI photo
+![Uploading image.png…]()
+
 
 GUI consists of 4 panels. Original frame, frame with detected chessboard corners needed for camera calibration algorythm, output undistorted frame and control panel, that lets you add images based of which new camera parametres will be calculated, delete all of them  and button which calibrate camera based of caputred frames.  <br>
 **Run `main.py` for live camera calibration.**  
 
 ## Used tools
 - Python
-- Various python Libraries (OpenCV,TKinter,Numpy)
-- Chessboard camera calibration algorythm
+- Various Python Libraries (OpenCV,TKinter,Numpy)
+- Chessboard based camera calibration algorythm
 
 
 
