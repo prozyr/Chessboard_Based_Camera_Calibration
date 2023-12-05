@@ -8,6 +8,14 @@ There are two ways of camera calibration
 - Static Camera Calibration
 - Live camera calibration
 
+## Table of Contents
+
+
+- [Static camera calibration](#static-camera-calibration)
+- [Live camera calibration](#live-camera-calibration)
+- [License](#license)
+- [Installation](#installation)
+- 
 <h3 style="align-items: center; text-align: center;">Image example of fishEye distortion</h3>
 <div style="display: grid; grid-template-columns: repeat(2, auto); text-align: center; width: 90%; gap: 20px;">
   <div>
@@ -33,7 +41,8 @@ For this mode to run having working camera is required. Running the program prov
 GUI consists of 4 panels. Original frame, frame with detected chessboard corners needed for camera calibration algorythm, output undistorted frame and control panel, that lets you add images based of which new camera parametres will be calculated, delete all of them  and button which calibrate camera based of caputred frames.  <br>
 **Run `main.py` for live camera calibration.**  
 
-## Requirements
+## Installation
+Running this project requires:
 - Python
 - Python Libraries (OpenCV,TKinter,Numpy)
 
@@ -43,3 +52,6 @@ Install packages with the package manager manually if not already downloaded.
     $ pip install tk
     $ pip install opencv-python
 
+##License
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+- **[MIT license](http://opensource.org/licenses/mit-license.php)**
